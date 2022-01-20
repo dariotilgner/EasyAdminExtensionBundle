@@ -49,9 +49,6 @@
         "symfony/var-dumper": ">= 5.3 <6.0",
         "symfony/yaml": ">= 5.3 <6.0"
     },
-    "conflict": {
-        "easycorp/easyadmin-bundle": "<2.2.2"
-    },
     "config": {
         "sort-packages": true,
         "platform": {

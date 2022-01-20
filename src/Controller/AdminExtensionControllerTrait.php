@@ -31,7 +31,7 @@ trait AdminExtensionControllerTrait
 
         // Removes existing referer
         $baseMainRequestUri = (string) (!$this->request->isXmlHttpRequest()
-            ? $this->requestStack->getMainRequest()?->getUri()
+            ? $this->container->get('request_stack')->getMainRequest()?->getUri()
             : $this->request->headers->get('referer'));
         \parse_str(\parse_url($baseMainRequestUri, PHP_URL_QUERY), $queryParameters);
         unset($queryParameters['referer']);
