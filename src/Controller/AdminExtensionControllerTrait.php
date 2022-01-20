@@ -5,6 +5,7 @@ namespace AlterPHP\EasyAdminExtensionBundle\Controller;
 use AlterPHP\EasyAdminExtensionBundle\Security\AdminAuthorizationChecker;
 use EasyCorp\Bundle\EasyAdminBundle\Event\EasyAdminEvents;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 trait AdminExtensionControllerTrait
 {
@@ -29,15 +30,15 @@ trait AdminExtensionControllerTrait
         );
 
         // Removes existing referer
-        $baseMasterRequestUri = !$this->request->isXmlHttpRequest()
-            ? $this->get('request_stack')->getMasterRequest()->getUri()
-            : $this->request->headers->get('referer');
-        \parse_str(\parse_url($baseMasterRequestUri, PHP_URL_QUERY), $queryParameters);
+        $baseMainRequestUri = (string) (!$this->request->isXmlHttpRequest()
+            ? $this->requestStack->getMainRequest()?->getUri()
+            : $this->request->headers->get('referer'));
+        \parse_str(\parse_url($baseMainRequestUri, PHP_URL_QUERY), $queryParameters);
         unset($queryParameters['referer']);
-        $masterRequestUri = \sprintf('%s?%s', \strtok($baseMasterRequestUri, '?'), \http_build_query($queryParameters));
+        $mainRequestUri = \sprintf('%s?%s', \strtok($baseMainRequestUri, '?'), \http_build_query($queryParameters));
 
         $requestParameters = $this->request->query->all();
-        $requestParameters['referer'] = $masterRequestUri;
+        $requestParameters['referer'] = $mainRequestUri;
 
         $viewVars = [
             'paginator' => $paginator,
@@ -54,7 +55,7 @@ trait AdminExtensionControllerTrait
     /**
      * {@inheritdoc}
      *
-     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * @throws AccessDeniedException
      */
     protected function isActionAllowed($actionName)
     {

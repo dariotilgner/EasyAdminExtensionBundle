@@ -1,6 +1,5 @@
 /build/
 /var/
 /vendor/
-/composer.lock
 /docker-compose.yml
 /phpunit.xml
