@@ -68,8 +68,5 @@
             "AppTestBundle\\": "tests/Fixtures/AppTestBundle/",
             "AlterPHP\\EasyAdminExtensionBundle\\Tests\\": "tests/"
         }
-    },
-    "replace": {
-        "alterphp/easyadmin-extension-bundle": "*"
     }
 }
